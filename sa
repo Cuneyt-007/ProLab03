@@ -1,0 +1,436 @@
+package prolab;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class Main {
+    
+    public static void main(String[] args) {
+        
+    	Parser_Dil sa = new Parser_Dil();
+    	sa.parserDil();
+    	
+    }
+}
+
+package prolab;
+
+import java.util.Hashtable;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+public class Kullanici {
+	
+	public String k_adi;
+	public String ad_soyad;
+	public String dil;
+	public String bölge;
+	public int takipci_sayisi;
+	public int takip_edilen_sayisi;
+	public String tweets;
+	public JsonNode takipciler;
+	public Hashtable<Integer,JsonNode> takipEdilen_hash;
+	public Hashtable<Integer,JsonNode> takipci_hash;
+	public Hashtable<Integer,JsonNode> tweet_hash;
+	public Hashtable<Integer,String> bolge_hash;
+	public Hashtable<Integer,String> dil_hash;
+	
+	public Kullanici(){
+		takipEdilen_hash = new Hashtable<>();
+		takipci_hash = new Hashtable<>();
+	}
+
+	 public Kullanici(String k_adi, String ad_soyad, String dil, String bölge, int takipci_sayisi, int takip_edilen_sayisi){
+		
+		this.ad_soyad = ad_soyad;
+		this.k_adi = k_adi;
+		this.dil = dil;
+		this.bölge = bölge;
+		this.takip_edilen_sayisi = takip_edilen_sayisi;
+		this.takipci_sayisi = takipci_sayisi;
+		
+	} 
+	
+	 
+		
+	
+
+
+}
+
+
+package prolab;
+
+
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Hashtable;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class Parser_TakipEdilen {
+	
+
+	 public static void parserTakipEdilen() {
+		 
+			Kullanici[] user = new Kullanici[10000];
+		
+		for(int j=0;j<10000;j++)
+		{
+			user[j] = new Kullanici();
+			user[j].takipEdilen_hash = new Hashtable<>();
+		}
+		
+		int i=0;
+	    try {
+	    	
+	    	String desktopPath = System.getProperty("user.home") + "/Desktop";
+	        String jsonFilePath = desktopPath + "/twitter_data.json";
+	    	
+	        // Jackson ObjectMapper oluştur
+	        ObjectMapper objectMapper = new ObjectMapper();
+
+	        // JSON dosyasını oku
+	        File jsonFile = new File(jsonFilePath);
+	        JsonNode userArray = objectMapper.readTree(jsonFile);
+	        
+	       
+	        // Her bir kullanıcı için bilgileri işle
+	        
+	        for (JsonNode userNode : userArray) {
+	        	
+	        	String username = userNode.get("username").asText();
+	            String name = userNode.get("name").asText();
+	            int followersCount = userNode.get("followers_count").asInt();
+	            int followingCount = userNode.get("following_count").asInt();
+ 
+	            JsonNode followingArray = userNode.get("following");
+	            if (followingArray.isArray()) {
+	                
+	            	int k=0;
+	                for (JsonNode followingNode : followingArray) {
+	                	user[i].takipEdilen_hash.put(k, followingNode);
+	                	k++;
+	                } 
+	                i++;
+	            } 
+	            
+	            for (int userIndex = 0; userIndex < i; userIndex++) {
+	                System.out.println("User : " + userIndex + "\n Takip Ettikleri:");
+	                for (int followingIndex = 0; followingIndex < user[userIndex].takipEdilen_hash.size(); followingIndex++) {
+	                    System.out.println(user[userIndex].takipEdilen_hash.get(followingIndex));
+	                }
+	                System.out.println();
+	            }
+	            
+ 
+	
+	            System.out.println(); // Kullanıcılar arasına boşluk bırak
+	        	}
+  
+
+	    } 
+	    catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	    
+		 }
+	
+	
+	
+}
+
+
+package prolab;
+
+
+
+	import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+	public class Parser_Takipci {
+
+
+		
+		 public void parserTakipci() {
+			 
+			 Kullanici[] user = new Kullanici[10000];
+				
+				for(int j=0;j<10000;j++)
+				{
+					user[j] = new Kullanici();
+					user[j].takipci_hash = new Hashtable<>();
+				}
+				
+			 
+				int i=0;
+			    try {
+			    	
+			    	String desktopPath = System.getProperty("user.home") + "/Desktop";
+			        String jsonFilePath = desktopPath + "/twitter_data.json";
+			    	
+			        // Jackson ObjectMapper oluştur
+			        ObjectMapper objectMapper = new ObjectMapper();
+
+			        // JSON dosyasını oku
+			        File jsonFile = new File(jsonFilePath);
+			        JsonNode userArray = objectMapper.readTree(jsonFile);
+
+			        // Her bir kullanıcı için bilgileri işle
+			        for (JsonNode userNode : userArray) {
+			            String username = userNode.get("username").asText();
+			            String name = userNode.get("name").asText();
+			            int followersCount = userNode.get("followers_count").asInt();
+			            int followingCount = userNode.get("following_count").asInt();
+
+			            
+			            JsonNode followersArray = userNode.get("followers");
+			            if (followersArray.isArray()) {
+			            	int k=0;
+			                for (JsonNode followerNode : followersArray) {  
+			                	user[i].takipci_hash.put(k, followerNode);
+			                	k++;
+			                }
+			                i++;
+			            }
+			            
+			            for (int userIndex = 0; userIndex < i; userIndex++) {
+			                System.out.println("User : " + userIndex + "\n Takipçileri:");
+			                for (int followerIndex = 0; followerIndex < user[userIndex].takipci_hash.size(); followerIndex++) {
+			                    System.out.println(user[userIndex].takipci_hash.get(followerIndex));
+			                }
+			                System.out.println();
+			            }
+			            
+
+			            System.out.println(); // Kullanıcılar arasına boşluk bırak
+			        }
+			        
+
+			    } 
+			    catch (IOException e) {
+			         e.printStackTrace();
+			     }
+			    
+				 }
+
+	}
+
+
+
+package prolab;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Hashtable;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class Parser_Tweet {
+	
+	 public void parserTweet() {
+		 
+		 Kullanici[] user = new Kullanici[10000];
+			
+			for(int j=0;j<10000;j++)
+			{
+				user[j] = new Kullanici();
+				user[j].tweet_hash = new Hashtable<>();
+			}
+		 
+			int i=0;
+		    try {
+		    	
+		    	String desktopPath = System.getProperty("user.home") + "/Desktop";
+		        String jsonFilePath = desktopPath + "/twitter_data.json";
+		    	
+		        // Jackson ObjectMapper oluştur
+		        ObjectMapper objectMapper = new ObjectMapper();
+
+		        // JSON dosyasını oku
+		        File jsonFile = new File(jsonFilePath);
+		        JsonNode userArray = objectMapper.readTree(jsonFile);
+
+		        // Her bir kullanıcı için bilgileri işle
+		        for (JsonNode userNode : userArray) {
+		            String username = userNode.get("username").asText();
+		            String name = userNode.get("name").asText();
+		            int followersCount = userNode.get("followers_count").asInt();
+		            int followingCount = userNode.get("following_count").asInt();
+
+
+		              JsonNode tweetsArray = userNode.get("tweets");
+		            
+		            if (tweetsArray.isArray()) {
+		               int k=0;
+		                for (JsonNode tweetNode : tweetsArray) {
+		                    user[i].tweet_hash.put(k, tweetNode);
+		                    k++;
+		                }
+		                i++;
+		            }
+		            
+		            for (int userIndex = 0; userIndex < i; userIndex++) {
+		                System.out.println("User : " + userIndex + "\n Tweetleri:");
+		                for (int tweetIndex = 0; tweetIndex < user[userIndex].tweet_hash.size(); tweetIndex++) {
+		                    System.out.println(user[userIndex].tweet_hash.get(tweetIndex));
+		                }
+		                System.out.println();
+		            }
+		            
+
+		            System.out.println(); // Kullanıcılar arasına boşluk bırak
+		        }
+		        
+
+		    } 
+		    catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    
+			 }
+
+}
+
+
+package prolab;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Hashtable;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class Parser_Bolge {
+	
+	public void parserBolge() {
+		
+		Kullanici[] user = new Kullanici[10000];
+		
+		for(int j=0;j<10000;j++)
+		{
+			user[j] = new Kullanici();
+			user[j].bolge_hash = new Hashtable<>();
+		}
+	 
+		int i=0;
+		
+	    try {
+	    	
+	    	String desktopPath = System.getProperty("user.home") + "/Desktop";
+	        String jsonFilePath = desktopPath + "/twitter_data.json";
+	    	
+	        // Jackson ObjectMapper oluştur
+	        ObjectMapper objectMapper = new ObjectMapper();
+
+	        // JSON dosyasını oku
+	        File jsonFile = new File(jsonFilePath);
+	        JsonNode userArray = objectMapper.readTree(jsonFile);
+
+	        // Her bir kullanıcı için bilgileri işle
+	        for (JsonNode userNode : userArray) {
+	            String username = userNode.get("username").asText();
+	            String name = userNode.get("name").asText();
+	            int followersCount = userNode.get("followers_count").asInt();
+	            int followingCount = userNode.get("following_count").asInt();
+	            String bolge = userNode.get("region").asText();
+	            		
+
+	            System.out.println("Kullanici Adi: " + username);
+        
+	            user[i].bolge_hash.put(i, bolge);
+	            System.out.println(user[i].bolge_hash.get(i));
+	            i++;
+
+	            System.out.println(); // Kullanıcılar arasına boşluk bırak
+	        }
+	        
+
+	    } 
+	    catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	    
+		 }
+
+}
+
+
+package prolab;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Hashtable;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class Parser_Dil {
+	
+	 public void parserDil() {
+		 
+		 Kullanici[] user = new Kullanici[10000];
+			
+			for(int j=0;j<10000;j++)
+			{
+				user[j] = new Kullanici();
+				user[j].dil_hash = new Hashtable<>();
+			}
+		 
+			int i=0;
+		 
+		    try {
+		    	
+		    	String desktopPath = System.getProperty("user.home") + "/Desktop";
+		        String jsonFilePath = desktopPath + "/twitter_data.json";
+		    	
+		        // Jackson ObjectMapper oluştur
+		        ObjectMapper objectMapper = new ObjectMapper();
+
+		        // JSON dosyasını oku
+		        File jsonFile = new File(jsonFilePath);
+		        JsonNode userArray = objectMapper.readTree(jsonFile);
+
+		        // Her bir kullanıcı için bilgileri işle
+		        for (JsonNode userNode : userArray) {
+		            String username = userNode.get("username").asText();
+		            String name = userNode.get("name").asText();
+		            int followersCount = userNode.get("followers_count").asInt();
+		            int followingCount = userNode.get("following_count").asInt();
+		            String Dil = userNode.get("language").asText();
+		           
+		            
+		            System.out.println("Kullanici Adi: " + username);
+		            
+		            user[i].dil_hash.put(i, Dil);
+		            System.out.println(user[i].dil_hash.get(i));
+		        i++;
+
+		            System.out.println(); // Kullanıcılar arasına boşluk bırak
+		        }
+		        
+
+		    } 
+		    catch (IOException e) {
+		         e.printStackTrace();
+		     }
+		    
+			 }
+
+}
+
