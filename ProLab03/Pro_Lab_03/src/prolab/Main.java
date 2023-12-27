@@ -12,12 +12,10 @@ public class Main {
     
     public static void main(String[] args) {
         
-    	Parser_TakipEdilen sa = new Parser_TakipEdilen();
-    	sa.parserTakipEdilen();
+    	Parser_Tweet sa = new Parser_Tweet();
+    	sa.parserTweet();
     	
-    	/*CustomHashMap<Integer, Integer> hash = new CustomHashMap<>();
-    	hash.put(1, 1);
-    	System.out.println(hash.get(1));*/
+    	
     	
     }
 }

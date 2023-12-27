@@ -40,17 +40,17 @@ public class Kullanici {
 	 
 	public class t_e_hash
 	{
-		CustomHashMap<Integer, JsonNode> t_e_hash = new CustomHashMap<>();
+		CustomHashMap<Integer, StringBuilder> t_e_hash = new CustomHashMap<>();
 	}
 	 
 	public class tak_hash
 	{
-		CustomHashMap<Integer, JsonNode> tak_hash = new CustomHashMap<>();
+		CustomHashMap<Integer, StringBuilder> tak_hash = new CustomHashMap<>();
 	}
 	
 	public class tweet_hash
 	{
-		CustomHashMap<Integer, JsonNode> tweet_hash = new CustomHashMap<>();
+		CustomHashMap<Integer, StringBuilder> tweet_hash = new CustomHashMap<>();
 	}
 	
 	public class bolge_hash
