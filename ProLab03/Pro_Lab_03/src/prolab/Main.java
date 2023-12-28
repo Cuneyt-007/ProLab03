@@ -12,8 +12,8 @@ public class Main {
     
     public static void main(String[] args) {
         
-    	Parser_Tweet sa = new Parser_Tweet();
-    	sa.parserTweet();
+    	Parser_Dil sa = new Parser_Dil();
+    	sa.parserDil();
     	
     	
     	

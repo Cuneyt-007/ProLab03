@@ -34,23 +34,23 @@ public class Kullanici {
 	 
 	public class user
 	{
-		CustomHashMap<Integer, String> user_hash = new CustomHashMap<>();
+		CustomHashMap<Integer, String> user_hash = new CustomHashMap();
 	}
 	 
 	 
 	public class t_e_hash
 	{
-		CustomHashMap<Integer, StringBuilder> t_e_hash = new CustomHashMap<>();
+		CustomHashMap<Integer,String> t_e_hash = new CustomHashMap();
 	}
 	 
 	public class tak_hash
 	{
-		CustomHashMap<Integer, StringBuilder> tak_hash = new CustomHashMap<>();
+		CustomHashMap<Integer, String> tak_hash = new CustomHashMap<>();
 	}
 	
 	public class tweet_hash
 	{
-		CustomHashMap<Integer, StringBuilder> tweet_hash = new CustomHashMap<>();
+		CustomHashMap<Integer, String> tweet_hash = new CustomHashMap<>();
 	}
 	
 	public class bolge_hash

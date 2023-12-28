@@ -19,7 +19,7 @@ public class Parser_Tweet {
 		    try {
 		    	
 		    	String desktopPath = System.getProperty("user.home") + "/Desktop";
-		        String jsonFilePath = desktopPath + "/data.json";
+		        String jsonFilePath = desktopPath + "/twitter_data.json";
 		    	
 		        // Jackson ObjectMapper oluþtur
 		        ObjectMapper objectMapper = new ObjectMapper();
@@ -28,7 +28,10 @@ public class Parser_Tweet {
 		        File jsonFile = new File(jsonFilePath);
 		        JsonNode userArray = objectMapper.readTree(jsonFile);
 
-		        int i=0;
+		        Kullanici kullanici = new Kullanici();
+		        Kullanici.tweet_hash tweet_hash2 = kullanici.new tweet_hash();
+		        
+		        int i=1;
 		        // Her bir kullanýcý için bilgileri iþle
 		        for (JsonNode userNode : userArray) {
 		        	
@@ -41,11 +44,10 @@ public class Parser_Tweet {
 		            String Dil = userNode.get("language").asText();
 		            String bolge = userNode.get("region").asText();
 
-		            Kullanici kullanici = new Kullanici(username, name, Dil, bolge, followersCount, followingCount);
+		            Kullanici kullanici1 = new Kullanici(username, name, Dil, bolge, followersCount, followingCount);
 	                Kullanici.user user = kullanici.new user();
 	                user.user_hash.put(i,username);
-	                Kullanici.tweet_hash tweet_hash2 = kullanici.new tweet_hash();
-
+	                
 		            JsonNode tweetsArray = userNode.get("tweets");
 		            if (tweetsArray.isArray()) {
 		               
@@ -56,16 +58,13 @@ public class Parser_Tweet {
 		               
 		            }          
 
-		            tweet_hash2.tweet_hash.put(i, birlestir);
+		            tweet_hash2.tweet_hash.put(i, birlestir.toString());
 	                i++;
-	            
-	            System.out.println(user.user_hash.get(i-1)+" Tweetleri:");
-	            System.out.println(tweet_hash2.tweet_hash.get(i-1).toString());
 	            
 	            birlestir.setLength(0);
 		        }
 		        
-		        
+		        System.out.println(tweet_hash2.tweet_hash.get(2).toString());
 
 		    } 
 		    catch (IOException e) {

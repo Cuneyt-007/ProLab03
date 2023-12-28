@@ -11,11 +11,11 @@ public class Parser_Dil {
 	
 	 public void parserDil() {
 		 
-		    int i=0;
+		    int i=1;
 		    try {
 		    	
 		    	String desktopPath = System.getProperty("user.home") + "/Desktop";
-		        String jsonFilePath = desktopPath + "/data.json";
+		        String jsonFilePath = desktopPath + "/twitter_data.json";
 		    	
 		        // Jackson ObjectMapper oluþtur
 		        ObjectMapper objectMapper = new ObjectMapper();
@@ -23,6 +23,9 @@ public class Parser_Dil {
 		        // JSON dosyasýný oku
 		        File jsonFile = new File(jsonFilePath);
 		        JsonNode userArray = objectMapper.readTree(jsonFile);
+		        
+		        Kullanici kullanici = new Kullanici();
+		        Kullanici.dil_hash dil2_hash = kullanici.new dil_hash();
 
 		        // Her bir kullanýcý için bilgileri iþle
 		        for (JsonNode userNode : userArray) {
@@ -32,18 +35,15 @@ public class Parser_Dil {
 		            int followingCount = userNode.get("following_count").asInt();
 		            String Dil = userNode.get("language").asText();
 		            String bolge = userNode.get("region").asText();
-		           
-		            System.out.println("Kullanýcý Adý: " + username);
-	                System.out.println("Adý: " + name);
-	                System.out.println(Dil);
-	                Kullanici kullanici = new Kullanici(username, name, Dil, bolge, followersCount, followingCount);
-	                Kullanici.dil_hash dil2_hash = kullanici.new dil_hash();
-	                dil2_hash.dil_hash.put(i, bolge);
+
+	                Kullanici kullanici1 = new Kullanici(username, name, Dil, bolge, followersCount, followingCount);
+	                
+	                dil2_hash.dil_hash.put(i, Dil);
 	                i++;
 
-		            System.out.println(); // Kullanýcýlar arasýna boþluk býrak
 		        }
 		        
+		        System.out.println(dil2_hash.dil_hash.get(2));
 
 		    } 
 		    catch (IOException e) {

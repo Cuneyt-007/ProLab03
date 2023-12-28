@@ -20,12 +20,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		
 		 public void parserTakipci() {
 			 
-			 
+			 	
 				
 			    try {
 			    	
 			    	String desktopPath = System.getProperty("user.home") + "/Desktop";
-			        String jsonFilePath = desktopPath + "/data.json";
+			        String jsonFilePath = desktopPath + "/twitter_data.json";
 			    	
 			        // Jackson ObjectMapper oluþtur
 			        ObjectMapper objectMapper = new ObjectMapper();
@@ -34,7 +34,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 			        File jsonFile = new File(jsonFilePath);
 			        JsonNode userArray = objectMapper.readTree(jsonFile);
 			        
-			        int i=0;
+			        Kullanici kullanici = new Kullanici();
+			        Kullanici.tak_hash tak_hash2 = kullanici.new tak_hash();
+			       
+			        int i=1;
 			        // Her bir kullanýcý için bilgileri iþle
 			        for (JsonNode userNode : userArray) {
 			        	
@@ -47,11 +50,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 			            String Dil = userNode.get("language").asText();
 			            String bolge = userNode.get("region").asText();
 			            
-			            Kullanici kullanici = new Kullanici(username, name, Dil, bolge, followersCount, followingCount);
+			            Kullanici kullanici1 = new Kullanici(username, name, Dil, bolge, followersCount, followingCount);
 		                Kullanici.user user = kullanici.new user();
 		                user.user_hash.put(i,username);
 		                
-		                Kullanici.tak_hash tak_hash2 = kullanici.new tak_hash();
+		                
 
 			            
 			            JsonNode followersArray = userNode.get("followers");
@@ -62,18 +65,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 			            }
 			            
-			            tak_hash2.tak_hash.put(i, birlestir);
+			            tak_hash2.tak_hash.put(i, birlestir.toString());
 		                i++;
-		            
-		            System.out.println(user.user_hash.get(i-1)+" Takipcileri:");
-		            System.out.println(tak_hash2.tak_hash.get(i-1).toString());
 		            
 		            birlestir.setLength(0);
 			              
- 
 			        }
 			        
-
+			        System.out.println(tak_hash2.tak_hash.get(10000).toString());
+			        
 			    } 
 			    catch (IOException e) {
 			         e.printStackTrace();
